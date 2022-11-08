@@ -10,17 +10,21 @@ class ProductController extends BaseController {
 
       this.responseHandler(res, await productService.create(validData), 200);
     } catch (error) {
-      console.log(
-        "🔰 > file: products.controller.ts > line 12 > ProductController > create > error",
-        error
-      );
       this.errorHandler(res, error);
     }
   }
 
   async findAll(req: Request, res: Response) {
     try {
-      this.responseHandler(res, await productService.findAll(), 200);
+      const { pageSize, currentPage } = req.query;
+      this.responseHandler(
+        res,
+        await productService.findAll(
+          Number(pageSize || 10),
+          Number(currentPage || 1)
+        ),
+        200
+      );
     } catch (error) {
       this.errorHandler(res, error);
     }
