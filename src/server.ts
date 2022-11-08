@@ -1,9 +1,10 @@
-import express, { Application } from "express";
+import express, { Application, json } from "express";
 
 import * as http from "http";
+import { inspect } from "util";
 
 const app = express();
-
+app.use(json());
 export default class Server {
   //Load router
   router(routes: (app: Application) => void) {
