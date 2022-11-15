@@ -26,6 +26,10 @@ class ProductController extends BaseController {
         200
       );
     } catch (error) {
+      console.log(
+        "🔰 > file: products.controller.ts > line 29 > ProductController > findAll > error",
+        error
+      );
       this.errorHandler(res, error);
     }
   }

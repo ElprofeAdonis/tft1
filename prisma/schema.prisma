@@ -14,18 +14,22 @@ enum OrderState {
   NEW
   PROCCESSING
   SHIPPED
-  DELIVERED
   CANCELED
 }
 
+enum ShippingState {
+  IN_TRANSIT
+  DELIVERED
+  UNKNOW
+}
+
 model User {
-  id         Int       @id @default(autoincrement())
-  username   String
-  email      String
-  password   String
-  createdAt  DateTime  @default(now())
-  shipping   Shipping? @relation(fields: [shippingId], references: [id])
-  shippingId Int?      @unique
+  id        Int       @id @default(autoincrement())
+  username  String
+  email     String
+  password  String
+  createdAt DateTime  @default(now())
+  contacts  Contact[]
 }
 
 model Review {
@@ -52,12 +56,11 @@ model Product {
 model Order {
   id           Int         @id @default(autoincrement())
   code         String
-  trackCode    String
   state        OrderState  @default(NEW)
   total        Float
   items        OrderItem[]
-  shippingId   Int
-  shipping     Shipping    @relation(fields: [shippingId], references: [id])
+  contactId    Int
+  contact      Contact     @relation(fields: [contactId], references: [id])
   paymentState String
   updatedAt    DateTime    @default(now())
   createdAt    DateTime    @default(now())
@@ -73,7 +76,7 @@ model OrderItem {
   createdAt DateTime @default(now())
 }
 
-model Shipping {
+model Contact {
   id          Int      @id @default(autoincrement())
   email       String
   phoneCode   String
@@ -81,8 +84,30 @@ model Shipping {
   address     String   @db.Text()
   postalCode  String
   references  String?  @db.Text()
-  user        User?
+  userId      Int?
+  user        User?    @relation(fields: [userId], references: [id])
   orders      Order[]
   updatedAt   DateTime @default(now())
   createdAt   DateTime @default(now())
+}
+
+model Shipping {
+  id          Int               @id @default(autoincrement())
+  orderId     Int
+  orderCode   String
+  trackCode   String
+  company     String
+  history     ShippingHistory[]
+  deliverDate DateTime
+  updatedAt   DateTime          @default(now())
+  createdAt   DateTime          @default(now())
+}
+
+model ShippingHistory {
+  id         Int      @id @default(autoincrement())
+  shippingId Int
+  comment    String?  @db.Text()
+  updatedAt  DateTime @default(now())
+  createdAt  DateTime @default(now())
+  Shipping   Shipping @relation(fields: [shippingId], references: [id])
 }
