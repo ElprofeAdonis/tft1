@@ -14,8 +14,8 @@ model profesor {
   id        Int      @default(autoincrement()) @id
   nombre    String
   codigo    Int @unique 
-  cedula    String
-  email     String
+  cedula    Int @unique
+  email     String @unique
   password  String
 } 
 
