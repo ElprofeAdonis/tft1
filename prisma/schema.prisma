@@ -10,15 +10,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model profesor {
+
+
+
+
+
+
+
+
+
+
+
+model alumno {
   id        Int      @default(autoincrement()) @id
   nombre    String
   codigo    Int @unique 
-  cedula    String
-  email     String
-  password  String
-} 
-
+  cedula    Int @unique
+  email     String @unique
+  password  String @unique
+}
 
 
 
