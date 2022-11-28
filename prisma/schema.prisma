@@ -27,8 +27,14 @@ model alumno {
   codigo    Int @unique 
   cedula    Int @unique
   email     String @unique
+<<<<<<< HEAD
   password  String @unique
 }
+=======
+  password  String
+} 
+
+>>>>>>> main
 
 
 
