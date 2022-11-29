@@ -12,14 +12,16 @@ datasource db {
 
 
 
-
-
-
-
-
-
-
-
+model profesor {
+  id        Int      @default(autoincrement()) @id
+  nombre    String
+  codigo    Int @unique 
+  cedula    Int @unique
+  email     String @unique
+  password  String @unique
+  alumno alumno[]
+  curso miscurso[]
+}
 
 model alumno {
   id        Int      @default(autoincrement()) @id
@@ -28,8 +30,60 @@ model alumno {
   cedula    Int @unique
   email     String @unique
   password  String @unique
+  profesor1 profesor @relation(fields: [profesorId], references: [id])
+  profesorId Int
+  clase2 clase @relation(fields: [clase1Id], references: [id])
+  clase1Id Int
+  calificacion calificaciones @relation(fields: [calificacionId], references: [id])
+  calificacionId Int
+}
+model miscurso {
+  id        Int      @default(autoincrement()) @id
+  nombreCurso     String
+  descripcion     String
+  periodo         String
+  fechaInicio     DateTime? @default(now())
+  archivoClase    String
+  profesor2 profesor @relation(fields: [profesor1Id], references: [id])
+  profesor1Id Int
+  clase clase[]
+  
 }
 
+model clase {
+  id                    Int      @default(autoincrement()) @id
+  nombre                String
+  codigo                Int @unique 
+  fechapublicacion      DateTime? @default(now())
+  urlarchivoclase       String
+  urlmeeting            String
+  miscursos1 miscurso @relation(fields: [cursoId], references: [id])
+  cursoId Int
+  asignacion asignaciones[]
+  alumno alumno[]
+  
+}
+
+model asignaciones{
+  id        Int      @default(autoincrement()) @id
+  nombreTarea       String
+  fechaInicio       DateTime? @default(now())
+  fechaEntrega      String
+  urlarchivo        String
+  clase1 clase @relation(fields: [claseId], references: [id])
+  claseId Int
+  
+}
+
+model calificaciones{
+  id        Int      @default(autoincrement()) @id
+  nombreTarea       String
+  nombrecalificacion String
+  calificacion      Int
+  asistencia String
+  urlarchivo        String
+  alumno alumno[]
+}
 
 
 
